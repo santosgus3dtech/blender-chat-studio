@@ -1,0 +1,20 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.12'
+      - run: uv sync --locked --extra dev
+      - run: uv run --locked ruff check studio tests examples
+      - run: uv run --locked pytest -q
+      - run: uv run --locked blender-studio validate examples/beveled-cube.py
+      - run: docker compose --profile tools config --quiet

@@ -1,0 +1,48 @@
+name: blender-chat-studio-public
+services:
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    network_mode: none
+    read_only: true
+    user: "10001:10001"
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs: ["/tmp:rw,nosuid,nodev,noexec,size=512m,mode=1777"]
+    cpus: 2
+    mem_limit: 2g
+    pids_limit: 128
+    volumes:
+      - ipc:/run/blender
+    healthcheck:
+      test: [CMD, python3, -c, "import socket,json; s=socket.socket(socket.AF_UNIX); s.settimeout(2); s.connect('/run/blender/worker.sock'); s.sendall(b'{\"op\":\"health\"}\\n'); assert json.loads(s.recv(2048)).get('ok')"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+      start_period: 10s
+  tools:
+    build:
+      context: .
+      dockerfile: Dockerfile.tools
+    profiles: [tools]
+    network_mode: none
+    read_only: true
+    user: "10001:10001"
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs: ["/tmp:rw,nosuid,nodev,noexec,size=128m,mode=1777"]
+    cpus: 1
+    mem_limit: 512m
+    pids_limit: 64
+    environment:
+      BLENDER_SOCKET_PATH: /run/blender/worker.sock
+    volumes:
+      - ipc:/run/blender:ro
+      - exports:/exports
+    depends_on:
+      worker:
+        condition: service_healthy
+volumes:
+  ipc:
+  exports:

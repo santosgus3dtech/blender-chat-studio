@@ -1,0 +1,23 @@
+.env
+.env.*
+!.env.example
+.venv*/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+node_modules/
+dist/
+data/
+artifacts/
+*.log
+*.egg-info/
+.local/
+_data/
+*.sqlite*
+*.db
+*.pem
+*.key
+.DS_Store
+Thumbs.db
+# Legacy local credential-check helper, not part of this public extraction.
+/scripts/check_api.py

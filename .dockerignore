@@ -1,0 +1,9 @@
+**
+!pyproject.toml
+!requirements.txt
+!studio/
+!studio/*.py
+!examples/
+!examples/*.py
+!Dockerfile.worker
+!Dockerfile.tools
