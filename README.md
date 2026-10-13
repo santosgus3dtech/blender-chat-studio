@@ -1,5 +1,7 @@
 # Blender Chat Studio
 
+🇧🇷 [Leia este README em Português (Brasil)](README.pt-BR.md).
+
 [![CI](https://github.com/santosgus3dtech/blender-chat-studio/actions/workflows/ci.yml/badge.svg)](https://github.com/santosgus3dtech/blender-chat-studio/actions/workflows/ci.yml)
 
 A public, portfolio-safe foundation for conversational 3D modeling with Blender
